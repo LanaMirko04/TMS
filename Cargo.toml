@@ -1,0 +1,14 @@
+[package]
+name = "tms"
+version = "0.1.0"
+authors = ["Mirko Lana <lana.mirko@skiff.com>"]
+edition = "2021"
+description = "Alan Turing machine simulator"
+readme = "README.md"
+repository = "https://github.com/LanaMirko04/tms"
+license-file = "LICENSE"
+publish = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
