@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{self, BufRead};
 
-#[derive(Debug)]
+#[derive(Copy, Clone, Debug)]
 enum Direction {
     LHS,
     RHS,
@@ -36,6 +36,10 @@ struct Instruction {
 }
 
 impl Instruction {
+    fn is_matching(&self, state: &str, symbol: char) -> bool {
+        return state == self.current_state && symbol == self.current_symbol
+    }
+
     fn to_string(&self) -> String {
         format!("instruction {{current_state: {}, current_symbol: {}, new_state: {}, new_symbol: {}, direction: {}}}",
                 self.current_state,
@@ -50,7 +54,7 @@ pub struct TuringMachine {
     state: String,
     halt_state: String,
     tape: Vec<char>,
-    tape_cell: u32,
+    tape_cell: usize,
     instructions: Vec<Instruction>,
 }
 
@@ -114,6 +118,20 @@ impl TuringMachine {
         Ok(())
     }
 
+    pub fn step(&mut self) {
+        for i in 0..self.instructions.len() {
+            if self.instructions[i]
+                .is_matching(&self.state, self.tape[self.tape_cell]) {
+                let state: String = self.instructions[i].new_state.clone();
+                let symbol: char = self.instructions[i].new_symbol;
+                let direction: Direction = self.instructions[i].direction;
+
+                self.update(&state, symbol, direction); 
+                break;
+            }
+        }
+    }
+
     pub fn print_info(&self) {
         println!("State: {}", self.state);
         println!("Halt state: {}", self.halt_state);
@@ -122,6 +140,17 @@ impl TuringMachine {
         println!("Instructions:");
         for (i, instruction) in self.instructions.iter().enumerate() {
             println!("#{}: {}", i + 1, instruction.to_string());
+        }
+    }
+
+    fn update(&mut self, new_state: &str, new_symbol: char, dir: Direction) {
+        self.state = new_state.to_string();
+        self.tape[self.tape_cell] = new_symbol;
+
+        match dir {
+            Direction::LHS => self.tape_cell -= 1,
+            Direction::RHS => self.tape_cell += 1,
+            Direction::STAY => {},
         }
     }
 }
@@ -133,8 +162,6 @@ fn main() -> Result<(), io::Error> {
     if let Err(error) = tm.load_cfg(cfg_path) {
         panic!("Error: {}", error);
     }
-
-    tm.print_info();
 
     Ok(())
 }
