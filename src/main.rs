@@ -1,8 +1,10 @@
-mod turing_machine;
+pub mod turing_machine;
+pub mod tui;
+pub mod app;
 
 use std::io;
 use clap::Parser;
-use crate::turing_machine::TuringMachine;
+use crate::app::App;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about=None)]
@@ -15,20 +17,14 @@ struct Args {
     conf: String,
 }
 
-fn main() -> Result<(), io::Error> {
+fn main() -> std::result::Result<(), io::Error> {
     let args = Args::parse();
     let conf = args.conf;
-    let mut tm = TuringMachine::new();
-    
-    if let Err(error) = tm.load_cfg(&conf) {
-        panic!("Error: {}", error);
-    }
+    let mut app = App::new(conf)?;
+    let result = app.run();
 
-    tm.print_tape();
-    while !tm.is_halt() {
-        tm.step();
-        tm.print_tape()
+    if let Err(err) = result {
+        eprintln!("{err:?}");
     }
-
     Ok(())
 }

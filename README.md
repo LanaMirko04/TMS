@@ -32,34 +32,21 @@ Before you begin, ensure you have the following installed:
 2. Build the project:
 
     ```bash
-    $ cargo build
+    $ cargo build --release
     ```
 
 3. Run the program:
 
     ```bash
-    $ cargo run
+    $ ./target/release/tms -c examples/example.cfg
     ```
 
 ## Usage
 
-**Important Note:** The command-line interface (CLI) for this Turing Machine simulator has not been implemented yet. To use the simulator, you will need to manually modify the path to the configuration file within the source code.
+```bash
+$ ./target/release/tms -c path/to/cfg/file
+```
 
-To load your configuration file, follow this steps:
-
-1. Open `src/main.rs` file in the project directory.
-2. Locate the following line of code:
-
-    ```rust
-    let cfg_path = "/Users/mirko/Projects/tms/examples/example.cfg";
-    ```
-
-3. Modify the `cfg_path` variable and save the changes.
-4. Run the program:
-
-    ```bash
-    $ cargo run
-    ```
 
 ## License
 

@@ -1,28 +1,32 @@
-use std::fs::File;
-use std::io::{self, BufRead};
+use std::{
+    io::{self, BufRead},
+    fs::File,
+    fmt,
+};
+
 
 #[derive(Copy, Clone, Debug)]
 enum Direction {
-    LHS,
-    RHS,
-    STAY,
+    Lhs,
+    Rhs,
+    Stay,
 }
 
 impl Direction {
     fn str2dir(strdir: &str) -> Result<Direction, io::Error> {
         match strdir {
-            "left" => Ok(Direction::LHS),
-            "right" => Ok(Direction::RHS),
-            "stay" => Ok(Direction::STAY),
+            "left" => Ok(Direction::Lhs),
+            "right" => Ok(Direction::Rhs),
+            "stay" => Ok(Direction::Stay),
             _ => Err(io::Error::new(io::ErrorKind::InvalidData, "Invalid direction")),
         }
     }
 
     fn dir2str(dir: &Direction) -> String {
         match dir {
-            Direction::LHS => "left".to_string(),
-            Direction::RHS => "right".to_string(),
-            Direction::STAY => "stay".to_string(),
+            Direction::Lhs => "left".to_string(),
+            Direction::Rhs => "right".to_string(),
+            Direction::Stay => "stay".to_string(),
         }
     }
 }
@@ -37,11 +41,14 @@ struct Instruction {
 
 impl Instruction {
     fn is_matching(&self, state: &str, symbol: char) -> bool {
-        return state == self.current_state && symbol == self.current_symbol
+        state == self.current_state && symbol == self.current_symbol
     }
+}
 
-    fn to_string(&self) -> String {
-        format!("instruction {{current_state: {}, current_symbol: {}, new_state: {}, new_symbol: {}, direction: {}}}",
+impl fmt::Display for Instruction {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f,
+                "instruction {{current_state: {}, current_symbol: {}, new_state: {}, new_symbol: {}, direction: {}}}",
                 self.current_state,
                 self.current_symbol,
                 self.new_state,
@@ -51,10 +58,10 @@ impl Instruction {
 }
 
 pub struct TuringMachine {
-    state: String,
+    pub state: String,
     halt_state: String,
-    tape: Vec<char>,
-    tape_cell: usize,
+    pub tape: Vec<char>,
+    pub tape_cell: usize,
     instructions: Vec<Instruction>,
 }
 
@@ -133,10 +140,10 @@ impl TuringMachine {
     }
 
     pub fn is_halt(&self) -> bool {
-        return self.state == self.halt_state
+        self.state == self.halt_state
     }
 
-    /* TEMPORANY METHOD (Test purpose only) */
+    /* TEMPORANY METHOD (Test purpose only)
     pub fn print_tape(&self) {
         println!("{:?}", self.tape);
     }
@@ -148,18 +155,19 @@ impl TuringMachine {
         println!("Tape cell: {}", self.tape_cell);
         println!("Instructions:");
         for (i, instruction) in self.instructions.iter().enumerate() {
-            println!("#{}: {}", i + 1, instruction.to_string());
+            println!("#{}: {}", i + 1, instruction);
         }
     }
+    */
 
     fn update(&mut self, new_state: &str, new_symbol: char, dir: Direction) {
         self.state = new_state.to_string();
         self.tape[self.tape_cell] = new_symbol;
 
         match dir {
-            Direction::LHS => self.tape_cell -= 1,
-            Direction::RHS => self.tape_cell += 1,
-            Direction::STAY => {},
+            Direction::Lhs => self.tape_cell -= 1,
+            Direction::Rhs => self.tape_cell += 1,
+            Direction::Stay => {},
         }
     }
 }
