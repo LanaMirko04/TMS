@@ -57,5 +57,6 @@ TMS is licensed under the MIT License. See the [LICENSE](LICENSE) file for more 
 
  - [The Rust Programming Language Book](https://doc.rust-lang.org/stable/book/)
  - [The Cargo Book](https://doc.rust-lang.org/stable/cargo/)
+ - [Ratatui](https://github.com/ratatui-org/ratatui)
  - [VHS](https://github.com/charmbracelet/vhs)
 
