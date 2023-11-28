@@ -23,6 +23,7 @@ fn main() -> std::result::Result<(), io::Error> {
     let mut app = App::new(conf)?;
     let result = app.run();
 
+
     if let Err(err) = result {
         eprintln!("{err:?}");
     }

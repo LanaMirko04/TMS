@@ -58,10 +58,10 @@ impl fmt::Display for Instruction {
 }
 
 pub struct TuringMachine {
-    pub state: String,
+    state: String,
     halt_state: String,
-    pub tape: Vec<char>,
-    pub tape_cell: usize,
+    tape: Vec<char>,
+    tape_cell: usize,
     instructions: Vec<Instruction>,
 }
 
@@ -74,6 +74,22 @@ impl TuringMachine {
             tape_cell: 0,
             instructions: Vec::new(),
         }
+    }
+
+    pub fn get_state(&self) -> &str {
+        &self.state
+    }
+
+    pub fn get_halt_state(&self) -> &str {
+        &self.halt_state
+    }
+
+    pub fn get_tape(&self) -> &[char] {
+        &self.tape
+    }
+
+    pub fn get_tape_cell(&self) -> usize {
+        self.tape_cell
     }
 
     pub fn load_cfg(&mut self, path: &str) -> Result<(), io::Error> {
@@ -143,6 +159,7 @@ impl TuringMachine {
         self.state == self.halt_state
     }
 
+
     /* TEMPORANY METHOD (Test purpose only)
     pub fn print_tape(&self) {
         println!("{:?}", self.tape);
@@ -169,5 +186,13 @@ impl TuringMachine {
             Direction::Rhs => self.tape_cell += 1,
             Direction::Stay => {},
         }
+    }
+
+    pub fn reset(&mut self) {
+        self.state.clear();
+        self.halt_state.clear();
+        self.tape.clear();
+        self.tape_cell = 0;
+        self.instructions.clear();
     }
 }

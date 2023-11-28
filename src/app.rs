@@ -1,4 +1,4 @@
-use std::{error::Error, io};
+use std::io;
 use crate::turing_machine::TuringMachine;
 use crate::tui;
 
@@ -27,16 +27,20 @@ impl App {
             terminal.draw(|f| tui::ui(f, &&self.tm))?;
 
             match tui::handle_events()? {
-                tui::TuiEvent::Run => self.running = true,
+                tui::TuiEvent::Launch => self.running = true,
                 tui::TuiEvent::Pause => self.running = false,
                 tui::TuiEvent::Step => self.tm.step(),
-                tui::TuiEvent::Reset => self.tm.load_cfg(&self.conf)?,
+                tui::TuiEvent::Restore => {
+                    self.tm.reset();
+                    self.tm.load_cfg(&self.conf)?
+                },
                 tui::TuiEvent::Quit => break 'outer,
                 tui::TuiEvent::NoEvent => {}
             }
 
             if self.running {
                 self.tm.step();
+                self.running = !self.tm.is_halt();
             }
         }
 

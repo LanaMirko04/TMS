@@ -2,13 +2,9 @@
 
 An Alan Turing machine simulator written in Rust as part of my personal learning journey to master the Rust programming language.
 
-<!--
-
 ## Screenshots
 
-![App Screenshot]()
-
--->
+![TMS demo gif](./assets/demo.gif)
 
 ## Getting Started
 
@@ -35,18 +31,22 @@ Before you begin, ensure you have the following installed:
     $ cargo build --release
     ```
 
-3. Run the program:
+3. Install the program:
+    ```bash
+    $ cargo install --path ./
+    ```
+
+4. Run the program:
 
     ```bash
-    $ ./target/release/tms -c examples/example.cfg
+    $ tms --conf examples/example.cfg
     ```
 
 ## Usage
 
 ```bash
-$ ./target/release/tms -c path/to/cfg/file
+$ tms --conf path/to/cfg/file
 ```
-
 
 ## License
 
