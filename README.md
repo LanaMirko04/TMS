@@ -2,7 +2,7 @@
 
 An Alan Turing machine simulator written in Rust as part of my personal learning journey to master the Rust programming language.
 
-## Screenshots
+## Demo
 
 ![TMS demo gif](./assets/demo.gif)
 
@@ -57,4 +57,5 @@ TMS is licensed under the MIT License. See the [LICENSE](LICENSE) file for more 
 
  - [The Rust Programming Language Book](https://doc.rust-lang.org/stable/book/)
  - [The Cargo Book](https://doc.rust-lang.org/stable/cargo/)
+ - [VHS](https://github.com/charmbracelet/vhs)
 
